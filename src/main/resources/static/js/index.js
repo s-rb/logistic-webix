@@ -11,16 +11,42 @@ function buildRoute(view) {
   };
 }
 
-require(['views/main', 'views/cars'], function (main, cars) {
+function buildButton(label, route) {
+  return {
+    view: 'button',
+    value: label,
+    width: 100,
+    align: 'center',
+    click: function () {
+      routie(route)
+    },
+  };
+}
+
+require(
+    ['views/main', 'views/cars', 'views/marks', 'util/resourceProxy'],
+    function (main, cars, marks, resourceProxy) {
   webix.ready(function () {
     webix.ui({
-      id: 'root',
       container: 'app',
+      width: document.body.clientWidth,
+      height: document.body.clientHeight,
+      rows: [
+        { view: "toolbar",
+          cols: [
+            buildButton('Home', ''),
+            buildButton('Marks', 'marks'),
+            buildButton('Cars', 'cars'),
+          ]
+        },
+        { id: 'root' }
+      ],
     });
   });
 
   routie({
     '': buildRoute(main),
     'cars': buildRoute(cars),
+    'marks': buildRoute(marks)
   });
 });
