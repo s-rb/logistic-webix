@@ -6,13 +6,18 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
+import ru.list.surkovr.logisticwebix.domain.ComboListItem;
+import ru.list.surkovr.logisticwebix.dto.ListItemDto;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 // Класс абстрактный для работы с любыми сущностями
 // CRUD действия
 // Мэппинги у потомков
 // Дженерик - Т - тип параметра с которым работаем (Mark/User etc), R - репозиторий
 // @PageableDefault - на случай если не передали параметр
-public abstract class AbstractRestController<T, R extends JpaRepository<T, ?>> {
+public abstract class AbstractRestController<T extends ComboListItem, R extends JpaRepository<T, ?>> {
 
     protected R repo;
 
@@ -45,5 +50,12 @@ public abstract class AbstractRestController<T, R extends JpaRepository<T, ?>> {
     @DeleteMapping("{id}")
     public void delete(@PathVariable("id") T dbObj) {
         repo.delete(dbObj);
+    }
+
+    @GetMapping("list")
+    public List<ListItemDto> list() {
+        return repo.findAll().stream()
+                .map(entity -> new ListItemDto(entity.getId(), entity.getName()))
+                .collect(Collectors.toList());
     }
 }
