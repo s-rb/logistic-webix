@@ -4,7 +4,12 @@ define(['component/listPage', 'collections/models'], function (listPage, models)
       'resource->/api/car',
       [
         {id: 'name', editor: 'text'},
-        {id: 'models', editor: 'combo', options: models},
+        {
+          id: 'models',
+          dialogUrl: 'views/model/modelDialog',
+        template: function (row) {
+            return row.model && row.model.name || ''
+        }},
       ],
   );
 });

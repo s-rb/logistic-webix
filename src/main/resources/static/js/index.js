@@ -18,37 +18,44 @@ function buildButton(label, route) {
     width: 100,
     align: 'center',
     click: function () {
-      routie(route)
+      routie(route);
     },
   };
 }
 
 require(
-    ['views/main', 'views/cars', 'views/marks', 'views/models', 'util/resourceProxy'],
+    [
+      'views/main',
+      'views/car/carList',
+      'views/mark/markList',
+      'views/model/modelList',
+      'util/resourceProxy',
+    ],
     function (main, cars, marks, models, resourceProxy) {
-  webix.ready(function () {
-    webix.ui({
-      container: 'app',
-      width: document.body.clientWidth,
-      height: document.body.clientHeight,
-      rows: [
-        { view: "toolbar",
-          cols: [
-            buildButton('Home', ''),
-            buildButton('Marks', 'marks'),
-            buildButton('Cars', 'cars'),
-            buildButton('Models', 'models'),
-          ]
-        },
-        { id: 'root' }
-      ],
-    });
-  });
+      webix.ready(function () {
+        webix.ui({
+          container: 'app',
+          width: document.body.clientWidth,
+          height: document.body.clientHeight,
+          rows: [
+            {
+              view: 'toolbar',
+              cols: [
+                buildButton('Home', ''),
+                buildButton('Marks', 'marks'),
+                buildButton('Cars', 'cars'),
+                buildButton('Models', 'models'),
+              ],
+            },
+            {id: 'root'},
+          ],
+        });
+      });
 
-  routie({
-    '': buildRoute(main),
-    'cars': buildRoute(cars),
-    'models': buildRoute(models),
-    'marks': buildRoute(marks)
-  });
-});
+      routie({
+        '': buildRoute(main),
+        'cars': buildRoute(cars),
+        'models': buildRoute(models),
+        'marks': buildRoute(marks),
+      });
+    });
